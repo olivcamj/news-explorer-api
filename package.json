@@ -1,0 +1,34 @@
+{
+  "name": "news-explorer-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olivcamj/news-explorer-api.git"
+  },
+  "keywords": [],
+  "author": "Olivia Cameron",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/olivcamj/news-explorer-api/issues"
+  },
+  "homepage": "https://github.com/olivcamj/news-explorer-api#readme",
+  "devDependencies": {
+    "eslint": "^7.22.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.12.0",
+    "mongoose-unique-validator": "^2.0.3",
+    "validator": "^13.5.2"
+  }
+}
