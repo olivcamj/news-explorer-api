@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isEmail(v),
-      message: 'The \'email\' field must have a email address',
+      message: 'The \'email\' field must have an email address',
     },
     unique: true,
   },
@@ -18,7 +18,6 @@ const userSchema = new mongoose.Schema({
     select: false,
     minlength: 8,
   },
-
   name: {
     type: String,
     minlength: 2,
