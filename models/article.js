@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const uniqueValidator = require('mongoose-unique-validator'); // prevent duplicates
 
-const articleSchema = mongoose.Schema({
+const articleSchema = new mongoose.Schema({
   keyword: {
     type: String,
     required: true,
@@ -16,39 +17,31 @@ const articleSchema = mongoose.Schema({
   },
   date: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
     required: true,
   },
   source: {
     type: String,
     required: true,
+    validate: {
+      validator: (v) => validator.isURL(v),
+      message: 'The \'link\' field must have an email address',
+    },
   },
   link: {
     type: String,
     required: true,
     validate: {
-      validator: (v) => validator.isURL(v, [
-        {
-          protocols: ['http', 'https', 'ftp'],
-          require_tld: true,
-          require_protocol: true,
-        },
-      ]),
-      message: "The 'link' field must have a valid URL.",
+      validator: (v) => validator.isURL(v),
+      message: 'The \'link\' field must have an email address',
     },
   },
   image: {
     type: String,
     required: true,
     validate: {
-      validator: (v) => validator.isURL(v, [
-        {
-          protocols: ['http', 'https', 'ftp'],
-          require_tld: true,
-          require_protocol: true,
-        },
-      ]),
-      message: "The 'link' field must have a valid URL.",
+      validator: (v) => validator.isURL(v),
+      message: 'The \'image\' field must have an email address',
     },
   },
   owner: {
@@ -58,4 +51,5 @@ const articleSchema = mongoose.Schema({
   },
 });
 
-module.exports = mongoose.models('article', articleSchema);
+articleSchema.plugin(uniqueValidator);
+module.exports = mongoose.model('article', articleSchema);
