@@ -1,5 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const rateLimit = require('express-rate-limit');
+const cors = require('cors');
+const helmet = require('helmet');
+const { requestLogger, errorLogger } = require('./middleware/logger.js');
+const { celebrate, Joi, errors } = require('celebrate');
 const userRouter = require('./routes/user');
 const articleRouter = require('./routes/article');
 const { createUser, login } = require('./controllers/user');
@@ -7,7 +12,18 @@ const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middleware/auth.js');
 
 const { PORT = 3000 } = process.env;
+
+require('dotenv').config();
+
 const app = express();
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // in 15 minutes
+  max: 100, // a maximum of 100 requests from one IP
+});
+
+// applying the rate-limiter
+app.use(limiter);
 
 mongoose.connect('mongodb://localhost:27017/news', {
   useNewUrlParser: true,
@@ -15,8 +31,14 @@ mongoose.connect('mongodb://localhost:27017/news', {
   useFindAndModify: false,
   useUnifiedTopology: true,
 });
+app.use(helmet());
 
 app.use(express.json());
+
+app.use(cors());
+app.options('*', cors()); // preflight
+
+app.use(requestLogger); // enabling the request logger
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -24,14 +46,29 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', createUser);
-app.post('/signin', login);
+app.post('/signup', celebrate({
+  body: Joi.object().keys({
+    username: Joi.string().required().min(2),
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), createUser);
+app.post('/signin', celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+    password: Joi.string().required().min(8),
+  }),
+}), login);
 
 app.use('/users', auth, userRouter);
 app.use('/articles', auth, articleRouter);
 app.use(() => {
   throw new NotFoundError('Page not found');
 });
+
+app.use(errorLogger); // enabling the error logger
+
+app.use(errors()); // celebrate error handler
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message } = err;
