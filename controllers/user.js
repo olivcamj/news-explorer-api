@@ -20,7 +20,7 @@ module.exports.getUser = (req, res, next) => User.findById(req.user._id)
   .catch(next);
 
 module.exports.createUser = (req, res, next) => {
-  const { email, password, username } = req.body;
+  const { email, password, name } = req.body;
 
   if (!password || !email) {
     throw new BadRequestError('Email and password fields should not be empty');
@@ -29,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
     .then((hash) => {
       User.create({
         email,
-        username,
+        name,
         password: hash,
       })
         .then((user) => {
