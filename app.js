@@ -10,6 +10,7 @@ const articleRouter = require('./routes/article');
 const { createUser, login } = require('./controllers/user');
 const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middleware/auth.js');
+const catchError = require('./middleware/catchError.js');
 
 const { PORT = 3000 } = process.env;
 const { NODE_ENV, MONGO_URI } = process.env;
@@ -71,13 +72,7 @@ app.use(errorLogger); // enabling the error logger
 
 app.use(errors()); // celebrate error handler
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500 ? 'An error occurred on the server' : message,
-  });
-  next();
-});
+app.use(catchError);
 
 app.listen(PORT, () => {
   console.log(`App is listening on ${PORT}`);
