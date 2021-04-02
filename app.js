@@ -18,6 +18,8 @@ require('dotenv').config();
 
 const app = express();
 
+app.use(requestLogger); // enabling the request logger
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // in 15 minutes
   max: 100, // a maximum of 100 requests from one IP
@@ -38,8 +40,6 @@ app.use(express.json());
 
 app.use(cors());
 app.options('*', cors()); // preflight
-
-app.use(requestLogger); // enabling the request logger
 
 app.get('/crash-test', () => {
   setTimeout(() => {
