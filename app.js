@@ -12,6 +12,7 @@ const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middleware/auth.js');
 
 const { PORT = 3000 } = process.env;
+const { NODE_ENV, MONGO_URI } = process.env;
 
 require('dotenv').config();
 
@@ -25,7 +26,7 @@ const limiter = rateLimit({
 // applying the rate-limiter
 app.use(limiter);
 
-mongoose.connect('mongodb://localhost:27017/news', {
+mongoose.connect((NODE_ENV === 'production' ? MONGO_URI : 'mongodb://localhost:27017/news'), {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
