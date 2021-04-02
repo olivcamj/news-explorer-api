@@ -49,8 +49,7 @@ module.exports.deleteArticle = (req, res, next) => {
     .then((article) => {
       if (!article) {
         throw new NotFoundError('Article not found');
-      }
-      if (req.user._id.toString() === article.owner.toString()) {
+      } else if (req.user._id.toString() === article.owner.toString()) {
         res.send(article);
       } else {
         throw new ForbiddenError('You can only delete your own articles');
