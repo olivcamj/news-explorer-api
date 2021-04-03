@@ -1,12 +1,16 @@
 const ServerError = require('../errors/server-err');
+const { serverErr } = require('../utils/constants');
+
+const throwServerError = () => {
+  throw new ServerError(serverErr);
+};
 
 const catchError = (err, req, res, next) => {
-  const { statusCode = 500 } = err;
+  const { statusCode = 500, message } = err;
 
   res.status(statusCode).send({
-    err: new ServerError('An error occurred on the server'),
+    message: statusCode === 500 ? throwServerError : message,
   });
-
   next();
 };
 
