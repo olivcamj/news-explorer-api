@@ -6,6 +6,15 @@ const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
 const UnauthorizedError = require('../errors/unauthorized-err');
+const {
+  noMatchFound,
+  invalidInput,
+  invalidUser,
+  unauthorizedInput,
+  userExists,
+  invalidData,
+  castErr,
+} = require('../utils/constants');
 
 const SALT_ROUNDS = 10;
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -13,7 +22,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports.getUser = (req, res, next) => User.findById(req.user._id)
   .then((user) => {
     if (!user) {
-      throw new NotFoundError('No User with a matching ID could be found');
+      throw new NotFoundError(noMatchFound);
     }
     res.send(user);
   })
@@ -23,7 +32,7 @@ module.exports.createUser = (req, res, next) => {
   const { email, password, name } = req.body;
 
   if (!password || !email) {
-    throw new BadRequestError('Email and password fields should not be empty');
+    throw new BadRequestError(invalidInput);
   }
   bcrypt.hash(password, SALT_ROUNDS)
     .then((hash) => {
@@ -39,11 +48,11 @@ module.exports.createUser = (req, res, next) => {
           });
         })
         .catch((err) => {
-          if (err.name === 'CastError') {
-            throw new BadRequestError('Invalid user');
+          if (err.name === castErr) {
+            throw new BadRequestError(invalidUser);
           }
           if (err.name === 'MongoError' || err.code === '11000' || err.name === 'ValidationError') {
-            throw new ConflictError('User already exists');
+            throw new ConflictError(userExists);
           }
           next(err);
         })
@@ -57,7 +66,7 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       if (!user) {
-        throw new UnauthorizedError('Incorrect password or email');
+        throw new UnauthorizedError(unauthorizedInput);
       }
       // authentication successful! user is in the user variable
       const token = jwt.sign(
@@ -70,8 +79,8 @@ module.exports.login = (req, res, next) => {
     })
     .catch((err) => {
       // authentication error
-      if (err.name === 'CastError') {
-        throw new BadRequestError('Invalid data');
+      if (err.name === castErr) {
+        throw new BadRequestError(invalidData);
       }
       next(err);
     })

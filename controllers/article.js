@@ -2,13 +2,21 @@ const Article = require('../models/article.js');
 const NotFoundError = require('../errors/not-found-err');
 const ForbiddenError = require('../errors/forbidden-err');
 const BadRequestError = require('../errors/bad-request-err');
+const {
+  noSavedArticles,
+  fieldsRequired,
+  articleNotFound,
+  invalidData,
+  forbiddenDelete,
+  castErr,
+} = require('../utils/constants');
 
 // find all articles saved by a user
 module.exports.getArticles = (req, res, next) => {
   Article.find({}) // find the article based on the user who id loggedIn
     .then((savedArticles) => {
       if (!savedArticles) {
-        throw new Error('no saved articles');
+        throw new Error(noSavedArticles);
       }
       res.send(savedArticles);
     })
@@ -34,7 +42,7 @@ module.exports.createArticle = (req, res, next) => {
     .then((article) => {
       // one of the required fields are missing throw an error
       if (!article) {
-        throw new BadRequestError('All fields are required to create an article');
+        throw new BadRequestError(fieldsRequired);
       }
       res.send(article);
     })
@@ -47,16 +55,16 @@ module.exports.deleteArticle = (req, res, next) => {
   Article.findByIdAndRemove(req.params.articleId)
     .then((article) => {
       if (!article) {
-        throw new NotFoundError('Article not found');
+        throw new NotFoundError(articleNotFound);
       } else if (req.user._id.toString() === article.owner.toString()) {
         res.send(article);
       } else {
-        throw new ForbiddenError('You can only delete your own articles');
+        throw new ForbiddenError(forbiddenDelete);
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequestError('Invalid data');
+      if (err.name === castErr) {
+        throw new BadRequestError(invalidData);
       }
       next(err);
     })

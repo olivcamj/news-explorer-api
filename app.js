@@ -11,6 +11,7 @@ const { createUser, login } = require('./controllers/user');
 const NotFoundError = require('./errors/not-found-err');
 const auth = require('./middleware/auth.js');
 const catchError = require('./middleware/catchError.js');
+const { notFound, serverCrash } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 const { NODE_ENV, MONGO_URI } = process.env;
@@ -44,7 +45,7 @@ app.options('*', cors()); // preflight
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error('Server will crash now');
+    throw new Error(serverCrash);
   }, 0);
 });
 
@@ -65,7 +66,7 @@ app.post('/signin', celebrate({
 app.use('/users', auth, userRouter);
 app.use('/articles', auth, articleRouter);
 app.use(() => {
-  throw new NotFoundError('Page not found');
+  throw new NotFoundError(notFound);
 });
 
 app.use(errorLogger); // enabling the error logger
