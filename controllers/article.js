@@ -7,7 +7,6 @@ const BadRequestError = require('../errors/bad-request-err');
 module.exports.getArticles = (req, res, next) => {
   Article.find({}) // find the article based on the user who id loggedIn
     .then((savedArticles) => {
-      console.log('savedArticles result: ', savedArticles);
       if (!savedArticles) {
         throw new Error('no saved articles');
       }
