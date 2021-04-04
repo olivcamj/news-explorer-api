@@ -2,16 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
-const { celebrate, Joi, errors } = require('celebrate');
-const limiter = require('./middleware/rate-limit');
+const { errors } = require('celebrate');
+const { limiter } = require('./middleware/rate-limit');
 const { requestLogger, errorLogger } = require('./middleware/logger.js');
-const userRouter = require('./routes/user');
-const articleRouter = require('./routes/article');
-const { createUser, login } = require('./controllers/user');
-const NotFoundError = require('./errors/not-found-err');
-const auth = require('./middleware/auth.js');
+const routes = require('./routes');
 const catchError = require('./middleware/catchError.js');
-const { notFound, serverCrash } = require('./utils/constants');
+const { serverCrash } = require('./utils/constants');
 
 const { PORT = 3000 } = process.env;
 const { NODE_ENV, MONGO_URI } = process.env;
@@ -44,25 +40,7 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signup', celebrate({
-  body: Joi.object().keys({
-    name: Joi.string().required().min(2),
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-}), createUser);
-app.post('/signin', celebrate({
-  body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().min(8),
-  }),
-}), login);
-
-app.use('/users', auth, userRouter);
-app.use('/articles', auth, articleRouter);
-app.use(() => {
-  throw new NotFoundError(notFound);
-});
+app.use(routes);
 
 app.use(errorLogger); // enabling the error logger
 
