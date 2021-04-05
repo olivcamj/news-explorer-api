@@ -24,6 +24,7 @@ articleRouter.post('/', celebrate({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
     text: Joi.string().required(),
+    date: Joi.string().required(),
     source: Joi.string().required(),
     link: Joi.string().required().pattern(/(https?:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9])(:?\d*)\/?([a-z_/0-9\-#.]*)\??([a-z_/0-9\-#=&]*)/),
     image: Joi.string().required(),
