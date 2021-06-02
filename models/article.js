@@ -23,10 +23,6 @@ const articleSchema = new mongoose.Schema({
   source: {
     type: String,
     required: true,
-    validate: {
-      validator: (v) => validator.isURL(v),
-      message: 'The \'link\' field must have an email address',
-    },
   },
   link: {
     type: String,
