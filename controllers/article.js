@@ -13,7 +13,7 @@ const {
 
 // find all articles saved by a user
 module.exports.getArticles = (req, res, next) => {
-  Article.find({}) // find the article based on the user who id loggedIn
+  Article.find({ owner: req.user._id }) // find the article based on the user who id loggedIn
     .then((savedArticles) => {
       if (!savedArticles) {
         throw new Error(noSavedArticles);
