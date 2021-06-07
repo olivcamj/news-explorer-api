@@ -26,6 +26,12 @@ module.exports.getUser = (req, res, next) => User.findById(req.user._id)
     }
     res.send(user);
   })
+  .catch((err) => {
+    if (err.name === castErr) {
+      throw new BadRequestError(invalidData);
+    }
+    next(err);
+  })
   .catch(next);
 
 module.exports.createUser = (req, res, next) => {
