@@ -35,12 +35,8 @@ The user will be able to create a user, login in and out, save and delete articl
 | /signin | POST | The response body should send an email and password and a http status of 200 |
 | /users/me | GET | Return information about an authorized user ```Content-Type: application/json, Authentication: Bearer “token” ```|
 | /users/me | PATCH| Update user info |
-| /users/me/avatar | PATCH | Update an avatar |
 | /cards | POST  | Create a card |
 | /cards | GET | Return all cards from the database|
-| /cards/:cardId | DELETE | Delete card by id |
-| /cards/likes/:cardId | PUT | Add likes |
-| /cards/likes/:cardId | PUT | Remove like |
 
 
 ## Acknowledgement
