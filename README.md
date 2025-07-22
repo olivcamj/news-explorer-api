@@ -1,6 +1,7 @@
 # News Explorer Api
 
-Backend for **news-explorer-api** domain name www.api.explorethenews.students.nomoreparties.site
+Backend for **news-explorer-api** 
+<!-- domain name www.api.explorethenews.students.nomoreparties.site -->
 
 Quick link to [FE](https://github.com/olivcamj/news-explorer-frontend)
 
