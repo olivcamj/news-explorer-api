@@ -66,8 +66,8 @@ An example of retrieving user account info on Postman ✨ see image ⤵️.
 | /signin | POST | The response body should send an email and password and an HTTP status of 200 |
 | /users/me | GET | Return information about an authorized user ``` Content-Type: application/json, Authentication: Bearer “token” ```|
 | /users/me | PATCH| Update user info |
-| /cards | POST  | Create a card |
-| /cards | GET | Return all cards from the database|
+| /articles | POST  | Create a card |
+| /articles | GET | Return all cards from the database|
 
 
 ## Acknowledgement
