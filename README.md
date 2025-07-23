@@ -36,7 +36,7 @@ The user will be able to create a user account, log in and log out, save and del
 
 
 <strong>Now</strong>, to use <em>any</em> of the endpoints, you will need to make the request with the Bearer token. 
-Copy your token and paste it into the authorization or  header section of your request.
+Copy your token and paste it into the authorization or header section of your request.
 
 An example of retrieving user account info on Postman ✨ see image ⤵️.
 <img width="872" height="340" alt="Screenshot 2025-07-22 at 11 57 33 AM" src="https://github.com/user-attachments/assets/3deb9a64-c30e-4e29-98e0-f9e9a150b252" />
@@ -60,14 +60,35 @@ An example of retrieving user account info on Postman ✨ see image ⤵️.
 
 ## Endpoints and Requests
 
-|Endpoint | Request | Description|
-|:-------:| :------: | :---- |
-| /signup | POST | The response body should send an email and password { “email”: “foo@bar.com”, “password”: “12345”,} and if a user is created, expect a successful response http status of 201   |
-| /signin | POST | The response body should send an email and password and an HTTP status of 200 |
-| /users/me | GET | Return information about an authorized user ``` Content-Type: application/json, Authentication: Bearer “token” ```|
-| /users/me | PATCH| Update user info |
-| /articles | POST  | Create a card |
-| /articles | GET | Return all cards from the database|
+|Endpoint | Request | Description| HTTP Status |
+|:-------:| :------: | :---- | :----
+| /signup | POST | The response body should send an email and password { “email”: “foo@bar.com”, “password”: “12345”} | 201 |
+| /signin | POST | The response body should send an email and password | 200 |
+| /users/me | GET | Return information about an authorized user ``` Content-Type: application/json, Authentication: Bearer “token” ```| 200|
+| /articles | POST  | Create an article |  201 |
+| /articles | GET | Return all articles from the database| 200 |
+
+
+### Sample Data
+For requests that require a body -> creating a new user, creating an article and updating user info.
+
+> [!WARNING]
+> Dates are expected in YYYY-MM-DD format ex: "2025-07-15"
+
+#### Creating an article:
+
+```json
+{
+    "keyword": "key",
+    "title": "Sample Title",
+    "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod tempor incididunt ...",
+    "date": "2025-07-15",
+    "source": "url.com",
+    "link": "https://www.sampleexample.com",
+    "image": "someimage.com"
+}
+```
+Otherwise, you will need to grab the `id` of your user to pass in the body of the request.
 
 
 ## Acknowledgement
