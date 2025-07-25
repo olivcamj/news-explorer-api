@@ -1,7 +1,7 @@
 {
   "name": "news-explorer-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "A secure Node.js REST API for a news explorer app. Supports user registration, login, article saving, and JWT-based authentication.",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
@@ -12,7 +12,17 @@
     "type": "git",
     "url": "git+https://github.com/olivcamj/news-explorer-api.git"
   },
-  "keywords": [],
+  "keywords": [
+    "eslint",
+    "javascript",
+    "news",
+    "nodejs",
+    "express",
+    "api",
+    "jwt",
+    "mongodb",
+    "authentication",
+    "backend"],
   "author": "Olivia Cameron",
   "license": "ISC",
   "bugs": {
