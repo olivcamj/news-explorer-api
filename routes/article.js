@@ -9,33 +9,34 @@ const {
   deleteArticle,
 } = require('../controllers/article.js');
 
+const authHeaderSchema = Joi.object({
+  authorization: Joi.string()
+    .pattern(/^Bearer\s[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/)
+    .required(),
+}).options({ allowUnknown: true });
+
 // returns information about the logged-in user (email and name)
 articleRouter.get('/', celebrate({
-  headers: Joi.object().keys({
-    authorization: Joi.string().regex(/^(Bearer )[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/).required(),
-  }).options({ allowUnknown: true }),
+  headers: authHeaderSchema,
 }), getArticles);
 
 articleRouter.post('/', celebrate({
-  headers: Joi.object().keys({
-    authorization: Joi.string().regex(/^(Bearer )[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_.+/=]*$/).required(),
-  }).options({ allowUnknown: true }),
+  headers: authHeaderSchema,
   body: Joi.object().keys({
     keyword: Joi.string().required(),
     title: Joi.string().required(),
     text: Joi.string().required(),
     date: Joi.string().required(),
     source: Joi.string().required(),
-    link: Joi.string().required().pattern(/(https?:\/\/(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9])(:?\d*)\/?([a-z_/0-9\-#.]*)\??([a-z_/0-9\-#=&]*)/),
+    link: Joi.string().required().uri(),
     image: Joi.string().required(),
   }),
 }), createArticle);
 
 articleRouter.delete('/:articleId', celebrate({
-  headers: Joi.object().keys({
-  }).unknown(true),
+  headers: Joi.object().unknown(true),
   params: Joi.object().keys({
-    articleId: Joi.string().hex().length(24),
+    articleId: Joi.string().hex().length(24).required(),
   }),
 }), deleteArticle);
 
