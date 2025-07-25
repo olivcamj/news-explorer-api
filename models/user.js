@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const uniqueValidator = require('mongoose-unique-validator');
 const bcrypt = require('bcryptjs'); // used in custom method on the static property of this schema
 
 const UnauthorizedError = require('../errors/unauthorized-err');
@@ -45,5 +44,4 @@ userSchema.statics.findUserByCredentials = function findUserByCredentials(email,
     });
 };
 
-userSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('user', userSchema);

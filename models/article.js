@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const uniqueValidator = require('mongoose-unique-validator'); // prevent duplicates
 
 const articleSchema = new mongoose.Schema({
   keyword: {
@@ -47,5 +46,4 @@ const articleSchema = new mongoose.Schema({
   },
 });
 
-articleSchema.plugin(uniqueValidator);
 module.exports = mongoose.model('article', articleSchema);

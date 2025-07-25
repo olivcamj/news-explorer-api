@@ -1,18 +1,30 @@
 {
   "name": "news-explorer-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "A secure Node.js REST API for a news explorer app. Supports user registration, login, article saving, and JWT-based authentication.",
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint":  "eslint ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/olivcamj/news-explorer-api.git"
   },
-  "keywords": [],
+  "keywords": [
+    "eslint",
+    "javascript",
+    "news",
+    "nodejs",
+    "express",
+    "api",
+    "jwt",
+    "mongodb",
+    "authentication",
+    "backend"
+  ],
   "author": "Olivia Cameron",
   "license": "ISC",
   "bugs": {
@@ -20,25 +32,25 @@
   },
   "homepage": "https://github.com/olivcamj/news-explorer-api#readme",
   "devDependencies": {
-    "eslint": "^7.22.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "nodemon": "^2.0.7"
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
+    "nodemon": "^3.1.10"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "celebrate": "^14.0.0",
+    "bcryptjs": "^3.0.2",
+    "celebrate": "^15.0.3",
     "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-rate-limit": "^5.2.6",
-    "express-winston": "^4.1.0",
-    "helmet": "^4.4.1",
-    "joi": "^17.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.0",
-    "mongoose-unique-validator": "^2.0.3",
-    "validator": "^13.5.2",
-    "winston": "^3.3.3"
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "express-winston": "^4.2.0",
+    "helmet": "^8.1.0",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.4",
+    "validator": "^13.15.15",
+    "winston": "^3.17.0"
   }
 }
