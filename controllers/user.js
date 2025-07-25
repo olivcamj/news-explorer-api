@@ -77,7 +77,7 @@ module.exports.login = (req, res, next) => {
       // authentication successful! user is in the user variable
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'practicum',
+        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
         { expiresIn: '7d' },
       );
       res.cookie('token', token, { httpOnly: true });
