@@ -21,13 +21,12 @@ app.use(requestLogger); // enabling the request logger
 // applying the rate-limiter
 app.use(limiter);
 
-mongoose.connect((NODE_ENV === 'production' ? MONGO_URI : 'mongodb://127.0.0.1:27017/local'));
+mongoose.connect((NODE_ENV === 'production' ? MONGO_URI : 'mongodb://127.0.0.1:27017/test'));
 app.use(helmet());
 
 app.use(express.json());
 
 app.use(cors());
-app.options('*', cors()); // preflight
 
 app.get('/crash-test', () => {
   setTimeout(() => {
