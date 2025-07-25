@@ -22,6 +22,7 @@ const bearer = 'Bearer ';
 const notFound = 'Page not found';
 const serverCrash = 'Server will crash now';
 const serverErr = 'An error occurred on the server';
+const reachedLimit = 'Too many requests, please try again later';
 
 module.exports = {
   invalidData,
@@ -40,4 +41,5 @@ module.exports = {
   notFound,
   serverCrash,
   serverErr,
+  reachedLimit,
 };
