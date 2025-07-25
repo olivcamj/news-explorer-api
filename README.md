@@ -40,6 +40,17 @@ Copy your token and paste it into the authorization or header section of your re
 
 An example of retrieving user account info on Postman ✨ see image ⤵️.
 <img width="872" height="340" alt="Screenshot 2025-07-22 at 11 57 33 AM" src="https://github.com/user-attachments/assets/3deb9a64-c30e-4e29-98e0-f9e9a150b252" />
+<h2>Alternatively ...</h2>
+Use your terminal:
+<ul> 
+<li><p>step 1: Sign up</p><code>curl -X POST http://localhost:3000/signup \
+  -H "Content-Type: application/json" \
+  -d '{"name": "Olivia", "email": "olivia@example.com", "password": "securepassword"}'</code></li>
+  <li><p>step 2: Sign in</p><code>curl -X POST http://localhost:3000/signin \
+  -H "Content-Type: application/json" \
+  -d '{"email": "olivia@example.com", "password": "securepassword"}'</code> </li>
+</ul>
+</p>
   </details>
 
 
