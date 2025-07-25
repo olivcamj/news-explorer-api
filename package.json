@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint":  "eslint ."
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,8 @@
     "jwt",
     "mongodb",
     "authentication",
-    "backend"],
+    "backend"
+  ],
   "author": "Olivia Cameron",
   "license": "ISC",
   "bugs": {
@@ -30,9 +32,10 @@
   },
   "homepage": "https://github.com/olivcamj/news-explorer-api#readme",
   "devDependencies": {
-    "eslint": "^7.22.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.32.0",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.6.0",
     "nodemon": "^3.1.10"
   },
   "dependencies": {
