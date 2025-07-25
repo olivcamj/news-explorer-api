@@ -1,5 +1,5 @@
 const express = require('express');
-  const router = express.Router();
+const router = express.Router();
 const { celebrate, Joi } = require('celebrate');
 const userRouter = require('./user');
 const articleRouter = require('./article');
@@ -27,8 +27,8 @@ router.post('/signin', celebrate({
 router.use(auth);
 router.use('/users', auth, userRouter);
 router.use('/articles', articleRouter);
-router.use('/*', () => {
-  throw new NotFoundError(notFound);
+router.use('/{*any}', (req, res, next) => {
+  next(new NotFoundError(notFound));
 });
 
 module.exports = router;
