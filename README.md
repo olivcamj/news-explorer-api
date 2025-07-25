@@ -1,13 +1,36 @@
 # News Explorer Api
 
-Backend for **news-explorer-api** 
-<!-- domain name www.api.explorethenews.students.nomoreparties.site -->
+<!-- Backend for **news-explorer-api** domain name www.api.explorethenews.students.nomoreparties.site -->
+**Secure Node.js REST API** for the *News Explorer* app — user registration, login, JWT‑based auth, saving/fetching/deleting articles with MongoDB.
+
+---
+
+## 🚀 Features
+
+- ✅ **User authentication** (signup/signin) using JWT  
+- ✅ **Articles CRUD**: save and delete articles per user  
+- ✅ **Protected routes** with role-based middleware  
+- ✅ **Validation** via Celebrate / Joi  
+- ✅ **Security best practices** using Helmet, express-rate-limit, CORS, winston  
+- ✅ **MongoDB + Mongoose** schema modeling  
+
+---
+
+## ⚙️ Tech Stack & Keywords
+
+Node.js, Express, MongoDB, Mongoose, JWT, Celebrate, Joi, Helmet, express-rate-limit, logging, API, backend  
+
 
 Quick link to [FE](https://github.com/olivcamj/news-explorer-frontend)
 
-## Description
+## 📦 Project Structure 
+/controllers   – route logic  
+/middleware    – authentication, error‑handling, rate‑limiting  
+/models        – Mongoose schemas (User, Article)  
+/routes        – route files for signup/signin, users, articles  
+/utils         – constants and error classes  
+app.js         – Express app entry point  
 
-The user will be able to create a user account, log in and log out, save and delete articles, and view their saved articles.
 
 ## Instructions (to run locally) 
 
@@ -54,19 +77,15 @@ Use your terminal:
   </details>
 
 
-## Technologies 
-- Node.js
-- Express.js
-- Mongodb
-
 ## Response Codes
 ```200: Success
 201: Created
 400: Bad request
-404: Not found
-403: Forbidden
-409: Conflict
 401: Unauthorized
+403: Forbidden
+404: Not found
+409: Conflict
+
 ```
 
 ## Endpoints and Requests
