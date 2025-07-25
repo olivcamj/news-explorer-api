@@ -66,29 +66,31 @@ module.exports.createUser = (req, res, next) => {
     });
 };
 
-module.exports.login = (req, res, next) => {
+module.exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  return User.findUserByCredentials(email, password)
-    .then((user) => {
-      if (!user) {
-        throw new UnauthorizedError(unauthorizedInput);
-      }
-      // authentication successful! user is in the user variable
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
-        { expiresIn: '7d' },
-      );
-      res.cookie('token', token, { httpOnly: true });
-      res.send({ token });
-    })
-    .catch((err) => {
-      // authentication error
-      if (err.name === castErr) {
-        throw new BadRequestError(invalidData);
-      }
+  try {
+    const user = await User.findUserByCredentials(email, password);
+
+    if (!user) {
+      throw new UnauthorizedError(unauthorizedInput);
+    }
+
+    // authentication successful! user is in the user variable
+    const token = jwt.sign(
+      { _id: user._id },
+      NODE_ENV === 'production' ? JWT_SECRET : 'some-secret-key',
+      { expiresIn: '7d' },
+    );
+
+    res.cookie('token', token, { httpOnly: true });
+    res.send({ token });
+  } catch (err) {
+    // authentication error
+    if (err.name === castErr) {
+      throw new BadRequestError(invalidData);
+    } else {
       next(err);
-    })
-    .catch(next);
+    }
+  }
 };
