@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -9,10 +11,8 @@ const routes = require('./routes');
 const catchError = require('./middleware/catchError.js');
 const { serverCrash } = require('./utils/constants');
 
-const { PORT = 3000 } = process.env;
-const { NODE_ENV, MONGO_URI } = process.env;
+const { PORT = 3000, MONGO_URI } = process.env;
 
-require('dotenv').config();
 
 const app = express();
 
@@ -21,12 +21,39 @@ app.use(requestLogger); // enabling the request logger
 // applying the rate-limiter
 app.use(limiter);
 
-mongoose.connect((NODE_ENV === 'production' ? MONGO_URI : 'mongodb://127.0.0.1:27017/test'));
+const uri = MONGO_URI;
+async function connectToDB() {
+  if (!uri) {
+  console.error("❌ MONGO_URI is not defined in environment variables.");
+  process.exit(1);
+}
+   try {
+    await mongoose.connect(uri);
+    await mongoose.connection.db.admin().command({ ping: 1 });
+    console.log("Pinged your deployment. ✅ You successfully connected to MongoDB!");
+  } catch(e) {
+     console.error('❌ Error connecting to MongoDB:', e);
+  }
+}
+connectToDB();
+
+// debugging connection issue
+mongoose.connection.on('connected', () => {
+  console.log('🟢 Mongoose connected');
+});
+mongoose.connection.on('error', (err) => {
+  console.error('🔴 Mongoose connection error:', err);
+});
+mongoose.connection.on('disconnected', () => {
+  console.log('🔌 Mongoose disconnected');
+});
+
 app.use(helmet());
+
+app.use(cors());
 
 app.use(express.json());
 
-app.use(cors());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
