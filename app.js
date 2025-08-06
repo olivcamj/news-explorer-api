@@ -35,6 +35,23 @@ async function connectToDB() {
 }
 connectToDB();
 
+const https = require("https");
+
+app.get("/my-ip", (req, res) => {
+  https.get("https://ifconfig.me/ip", (resp) => {
+    let data = "";
+    resp.on("data", (chunk) => {
+      data += chunk;
+    });
+    resp.on("end", () => {
+      res.send(`Server outgoing IP: ${data}`);
+    });
+  }).on("error", (err) => {
+    console.error("Error fetching IP:", err.message);
+    res.status(500).send("Unable to fetch IP");
+  });
+});
+
 app.use(helmet());
 
 app.use(cors());
