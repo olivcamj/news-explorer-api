@@ -24,49 +24,65 @@ module.exports.getArticles = (req, res, next) => {
 };
 
 // creates an article with the passed keyword, title, text, date, source, link, & image in the body
-module.exports.createArticle = (req, res, next) => {
+module.exports.createArticle = (req, res, next) =>
+{
   const {
     keyword, title, text, date, source, link, image,
   } = req.body;
 
-  Article.create({
-    keyword,
-    title,
-    text,
-    date,
-    source,
-    link,
-    image,
-    owner: req.user._id,
-  })
-    .then((article) => {
-      // one of the required fields are missing throw an error
-      if (!article) {
-        throw new BadRequestError(fieldsRequired);
+  Article.findOne({ link, owner: req.user._id })
+    .then((existingArticle) =>
+    {
+      if (existingArticle) {
+        throw new BadRequestError('You have already saved this article.');
       }
-      res.send(article);
-    })
-    .catch(next);
-};
 
-// deletes the stored article by _id
-// DELETE /articles/articleId
-module.exports.deleteArticle = (req, res, next) => {
-  Article.findByIdAndRemove(req.params.articleId)
-    .then((article) => {
-      if (!article) {
-        throw new NotFoundError(articleNotFound);
-      } else if (req.user._id.toString() === article.owner.toString()) {
-        res.send(article);
-      } else {
-        throw new ForbiddenError(forbiddenDelete);
-      }
+      return Article.create({
+        keyword,
+        title,
+        text,
+        date,
+        source,
+        link,
+        image,
+        owner: req.user._id,
+      })
     })
-    .catch((err) => {
-      if (err.name === castErr) {
-        throw new BadRequestError(invalidData);
-      }
-      next(err);
-    })
-    .catch(next);
-};
+        .then((article) =>
+        {
+          // one of the required fields are missing throw an error
+          if (!article) {
+            throw new BadRequestError(fieldsRequired);
+          }
+          res.send(article);
+        })
+        .catch(next);
+    };
+
+  // deletes the stored article by _id
+  // DELETE /articles/articleId
+  module.exports.deleteArticle = (req, res, next) =>
+  {
+    const { articleId } = req.params;
+
+    Article.findById(articleId)
+      .then((article) =>
+      {
+        if (!article) {
+          return next(NotFoundError(articleNotFound));
+        }
+        if (!req.user || !article.owner || req.user._id.toString() !== article.owner.toString()) {
+          return next(new ForbiddenError(forbiddenDelete))
+        }
+
+        return Article.findByIdAndDelete(articleId)
+          .then((deletedArticle) => res.send(deletedArticle));
+      })
+      .catch((err) =>
+      {
+        if (err.name === castErr) {
+          return next(new BadRequestError(invalidData));
+        }
+        next(err);
+      });
+  }

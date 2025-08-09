@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'The \'link\' field must have an email address',
+      message: 'The \'link\' field must have a valid URL',
     },
   },
   image: {
@@ -36,7 +36,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'The \'image\' field must have an email address',
+      message: 'The \'image\' field must have a valid URL',
     },
   },
   owner: {
@@ -45,5 +45,6 @@ const articleSchema = new mongoose.Schema({
     required: true,
   },
 });
+articleSchema.index({ link: 1, owner: 1 }, { unique: true });
 
 module.exports = mongoose.model('article', articleSchema);

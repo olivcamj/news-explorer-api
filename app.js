@@ -29,24 +29,11 @@ async function connectToDB() {
 }
    try {
     await mongoose.connect(uri);
-    await mongoose.connection.db.admin().command({ ping: 1 });
-    console.log("Pinged your deployment. ✅ You successfully connected to MongoDB!");
   } catch(e) {
      console.error('❌ Error connecting to MongoDB:', e);
   }
 }
 connectToDB();
-
-// debugging connection issue
-mongoose.connection.on('connected', () => {
-  console.log('🟢 Mongoose connected');
-});
-mongoose.connection.on('error', (err) => {
-  console.error('🔴 Mongoose connection error:', err);
-});
-mongoose.connection.on('disconnected', () => {
-  console.log('🔌 Mongoose disconnected');
-});
 
 app.use(helmet());
 
