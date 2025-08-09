@@ -51,22 +51,26 @@ module.exports.createArticle = (req, res, next) => {
 
 // deletes the stored article by _id
 // DELETE /articles/articleId
-module.exports.deleteArticle = (req, res, next) => {
-  Article.findByIdAndRemove(req.params.articleId)
+module.exports.deleteArticle = (req, res, next) =>
+{
+  const { articleId } = req.params;
+
+  Article.findById(articleId)
     .then((article) => {
       if (!article) {
-        throw new NotFoundError(articleNotFound);
-      } else if (req.user._id.toString() === article.owner.toString()) {
-        res.send(article);
-      } else {
-        throw new ForbiddenError(forbiddenDelete);
+       return  next(NotFoundError(articleNotFound));
       }
+      if (!req.user || !article.owner || req.user._id.toString() !== article.owner.toString()) {
+       return next(new ForbiddenError(forbiddenDelete))
+      }
+
+      return Article.findByIdAndDelete(articleId)
+        .then((deletedArticle) => res.send(deletedArticle));
     })
     .catch((err) => {
       if (err.name === castErr) {
-        throw new BadRequestError(invalidData);
+        return next(new BadRequestError(invalidData))
       }
       next(err);
     })
-    .catch(next);
 };
