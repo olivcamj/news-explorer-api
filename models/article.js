@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'The \'link\' field must have an email address',
+      message: 'The \'link\' field must have a valid URL',
     },
   },
   image: {
@@ -36,7 +36,7 @@ const articleSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator: (v) => validator.isURL(v),
-      message: 'The \'image\' field must have an email address',
+      message: 'The \'image\' field must have a valid URL',
     },
   },
   owner: {
